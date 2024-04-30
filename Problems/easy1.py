@@ -147,7 +147,7 @@ print(word_sizes('') == {})
 def swap(sentence):
     words = sentence.split()
     swapped = []
-    
+
     for word in words:
         # Get first and last chars
         first_char = word[0]
@@ -168,3 +168,203 @@ print(swap('Oh what a wonderful day it is')
       == "hO thaw a londerfuw yad ti si")  # True
 print(swap('Abcde') == "ebcdA")            # True
 print(swap('a') == "a")                    # True
+
+# Convert a string to a Number
+
+def string_to_integer(number):
+    digits = {
+        '1': 1,
+        '2': 2,
+        '3': 3,
+        '4': 4,
+        '5': 5,
+        '6': 6,
+        '7': 7,
+        '8': 8,
+        '9': 9,
+        '0': 0
+    }
+    value = 0
+    multiple = 1
+    sign = 1
+    
+    if not number[0].isalpha():
+        sign = (-1 if number.pop(0) == '-' else 1)
+
+
+    for char in number[::-1]:
+        value += digits[char] * multiple
+        multiple *= 10
+
+    return (value * sign)
+
+print(string_to_integer('432543'))
+
+print(string_to_integer("4321") == 4321)  # True
+print(string_to_integer("570") == 570)    # True
+
+# convert a string to signed number 
+
+def string_to_signed_integer(number):
+    digits = {
+        '1': 1,
+        '2': 2,
+        '3': 3,
+        '4': 4,
+        '5': 5,
+        '6': 6,
+        '7': 7,
+        '8': 8,
+        '9': 9,
+        '0': 0
+    }
+    value = 0
+    multiple = 1
+    sign = 1
+    
+    if number[0] in ('-', '+'):
+        sign = (-1 if number[0] == '-' else 1)
+        number = number[1:]
+
+
+    for char in number[::-1]:
+        value += digits[char] * multiple
+        multiple *= 10
+
+    return (value * sign)
+
+print(string_to_signed_integer("4321"))
+
+print(string_to_signed_integer("4321") == 4321)  # True
+print(string_to_signed_integer("-570") == -570)  # True
+print(string_to_signed_integer("+100") == 100)   # True
+
+# convert number to a string
+'''
+PEDAC - outline
+input : integer
+output : string
+rules:
+    explicit:
+        - non-negative integer
+        - may not use standard conversion functions such as str
+    implicit:
+        -   
+
+Questions:
+- 
+Data Structure:
+- dict key of numbers to strings
+
+Algorithm:
+- for each value in integer pull the string value from dict
+- append that value onto a string
+- return that string
+'''
+
+def integer_to_string(integer):
+    string = ""
+    nums = {
+        0: '0',
+        1: '1',
+        2: '2',
+        3: '3',
+        4: '4',
+        5: '5',
+        6: '6',
+        7: '7',
+        8: '8',
+        9: '9',
+    }
+
+    while integer / 10 > 0:
+        last_value = integer % 10
+        string = nums[last_value] + string
+        integer = integer // 10 
+
+    return string or '0'
+
+print(integer_to_string(4321) == "4321")              # True
+print(integer_to_string(0) == "0")                    # True
+print(integer_to_string(5000) == "5000")              # True
+print(integer_to_string(1234567890) == "1234567890")  # True
+
+# Convert a signed number to a string
+
+'''
+PEDAC - outline
+input :
+output :
+rules
+    explicit:
+        -
+    implicit:
+        -  
+
+Questions:
+- 
+
+Data Structure:
+- 
+Algorithm:
+- 
+'''
+
+
+def signed_integer_to_string(integer):
+    string = ""
+    nums = {
+        0: '0',
+        1: '1',
+        2: '2',
+        3: '3',
+        4: '4',
+        5: '5',
+        6: '6',
+        7: '7',
+        8: '8',
+        9: '9',
+    }
+    unsigned_int = abs(integer)    
+
+    while unsigned_int / 10 > 0:
+        last_value = unsigned_int % 10
+        string = nums[last_value] + string
+        unsigned_int = unsigned_int // 10 
+
+    if integer < 0:
+        unsigned_int *= -1
+        string = '-' + string
+    elif integer > 0:
+        string = '+' + string
+
+    return string or '0'
+
+
+print(signed_integer_to_string(4321) == "+4321")  # True
+print(signed_integer_to_string(-123) == "-123")   # True
+print(signed_integer_to_string(0) == "0")         # True
+
+
+
+
+
+
+'''
+PEDAC - outline
+input :
+output :
+rules
+    explicit:
+        -
+    implicit:
+        -  
+
+Questions:
+- 
+
+Data Structure:
+- 
+Algorithm:
+- 
+'''
