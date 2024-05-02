@@ -159,3 +159,130 @@ print(double_consonants('String') == "SSttrrinngg")
 print(double_consonants('Hello-World!') == "HHellllo-WWorrlldd!")
 print(double_consonants('July 4th') == "JJullyy 4tthh")
 print(double_consonants('') == "")
+
+# Reverse Number
+'''
+algo:
+- convert number to string
+- reverse string
+- conver back to int
+'''
+
+def reverse_number(number):
+    return int(str(number)[::-1])
+
+print(reverse_number(12345))    # 54321
+print(reverse_number(12213))    # 31221
+print(reverse_number(456))      # 654
+print(reverse_number(12000))    # 21 # Note that leading zeros in the result get dropped!
+print(reverse_number(1))        # 1
+
+# counting up
+
+'''
+algo:
+- 
+'''
+
+def sequence(number):
+    return list(range(1, number + 1))
+
+print(sequence(5))    # [1, 2, 3, 4, 5]
+print(sequence(3))    # [1, 2, 3]
+print(sequence(1))    # [1]
+
+# Name swapping
+
+'''
+algo:
+- split string into list
+- return list in rev order
+'''
+
+def swap_name(name):
+    lst = name.split()
+    rev = ', '.join(lst[::-1])
+    return rev
+
+print(swap_name('Joe Roberts'))    # "Roberts, Joe"
+
+# Sequence Count
+
+def sequence(count, start_num):
+    lst = []
+    for i in range(1, count + 1):
+        lst.append(start_num * i)
+    return lst
+
+print(sequence(5, 1))          # [1, 2, 3, 4, 5] =
+print(sequence(4, -7))         # [-7, -14, -21, -28]
+print(sequence(3, 0))          # [0, 0, 0]
+print(sequence(0, 1000000))    # []
+
+# Reversed lists
+
+'''
+algo:
+- get len of list
+- iterate through len of string 
+- pop first element and put it at - index of loop on
+- return list
+'''
+
+def reverse_list(lst):
+    temp_lst = lst[::-1]
+    for i in range(len(lst)):
+        lst[i] = temp_lst[i]
+    return lst
+
+list1 = [1, 2, 3, 4]
+result = reverse_list(list1)
+print(result)  # prints [4, 3, 2, 1]
+print(list1 is result)  # prints True
+
+list2 = ["a", "b", "c", "d", "e"]
+result2 = reverse_list(list2)
+print(result2)  # prints ['e', 'd', 'c', 'b', 'a']
+print(list2 is result2)  # prints True
+
+list3 = ["abc"]
+result3 = reverse_list(list3)
+print(result3)  # prints ['abc']
+print(list3 is result3)  # prints True
+
+list4 = []
+result4 = reverse_list(list4)
+print(result4)  # prints []
+print(list4 is result4)  # prints True
+
+# Matching Parenthesis
+
+'''
+algo:
+- find leftmost )
+- find the next ( to the left of that spot
+    - if can't return false
+- remove both 
+- repeat above steps until no matches remain
+
+'''
+
+string =  "What ((is))) up("
+inner_right = string.find(')')
+inner_left = string[:9].rfind('(')
+
+inner_right = string[inner_right:].find(')') + inner_right
+string.count(')')
+
+def is_balanced(s):
+    paren = 0
+    for char in s:
+        if char == '(':
+            paren += 1
+        elif char == ')':
+            paren -= 1
+        if paren < 0:
+            return False
+    return paren == 0
+
+print(is_balanced('hi) is this ('))
