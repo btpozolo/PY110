@@ -200,13 +200,6 @@ print(dct)
 dct = {key:value for key, value in lst}
 print(dct)
 # Pretty printed for clarity
-{
-    a: 1,
-    b: 'two',
-    sea: {c: 3},
-    D: ['a', 'b', 'c']
-}
-
 #5
 
 
