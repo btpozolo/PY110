@@ -62,3 +62,15 @@ print(freq_dict)
 [num for num in [1, 2, 3] if num > 1] 
 
 #10
+dictionary = {'a': 'ant', 'b': 'bear'}
+print(dictionary.popitem())
+
+#11
+
+lst = [1, 2, 3, 4, 5]
+lst[:2]
+
+#12
+frozen = frozenset([1, 2, 3, 4, 5])
+frozen.add(6)
+print(frozen)
