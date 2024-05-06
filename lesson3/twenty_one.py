@@ -1,4 +1,3 @@
-import pprint
 import random as r
 import os
 
@@ -23,7 +22,7 @@ def display_cards(hand, dealer_hand, show_dealers_cards=False):
     else:
         display_prompt(f'Dealer shows a {dealer_hand[0][1]} of {dealer_hand[0][0]}')
     print('-' * LINE_WIDTH)
-    
+
     cards = get_hand(hand)
     display_prompt(f'You have {cards}')
     display_prompt(f'Your current value is: {get_hand_value(hand)}')
@@ -49,20 +48,20 @@ def get_hand_value(hand):
     # check total of hand without aces
     # start with each ace valued at 11
     # if total is greater than 21, change one ace to 1 and recheck
-    
+
     value = 0
     numbers = '2345678910'
     faces_value = 10
     initial_ace_value = 11
     updated_ace_value = 1
-    
+
     for card in hand:
         # Number cards are their values
         if card[1] in numbers:
-             value += int(card[1])
+            value += int(card[1])
         # Face values are 10
         elif card[1] != 'A':
-             value += faces_value
+            value += faces_value
 
     # Aces Handling
     aces = [card for card in hand if card[1] == 'A']
@@ -75,8 +74,7 @@ def get_hand_value(hand):
             value -= (initial_ace_value - updated_ace_value)
             aces.pop()
             continue
-        else:
-            break
+        break
 
     return value
 
@@ -91,8 +89,7 @@ def get_player_move():
             continue
         if selection in ['h', 's']:
             break
-        else:
-            display_prompt('Invalid selection')
+        display_prompt('Invalid selection')
     return selection
 
 def get_winner(player_hand, dealer_hand):
@@ -101,15 +98,13 @@ def get_winner(player_hand, dealer_hand):
 
     if is_busted(player_hand):
         return 'Dealer'
-    elif is_busted(dealer_hand):
+    if is_busted(dealer_hand):
         return 'Player'
-    else:
-        if player_value > dealer_value:
-            return 'Player'
-        elif player_value < dealer_value:
-            return 'Dealer'
-        else:
-            return 'Draw'
+    if player_value > dealer_value:
+        return 'Player'
+    if player_value < dealer_value:
+        return 'Dealer'
+    return 'Draw'
 
 def initialize_deck():
     deck = []
@@ -117,10 +112,10 @@ def initialize_deck():
     suits = ['Hearts', 'Diamonds', 'Spades', 'Clubs']
 
     for suit in suits:
-            for number in numbers:
-                    deck.append([suit, number])
+        for number in numbers:
+            deck.append([suit, number])
 
-    return deck 
+    return deck
 
 def deal_cards(deck, number_cards):
     hand = []
@@ -130,20 +125,20 @@ def deal_cards(deck, number_cards):
         # print(f'card dealt: {card}')
 
         deck.remove(card)
-    return hand   
+    return hand
 
 def is_busted(hand):
-    return (get_hand_value(hand) > TARGET_VALUE)
+    return get_hand_value(hand) > TARGET_VALUE
 
 def update_hand(hand, move):
     match move:
         case 'h':
             hand += deal_cards(hand, 1)
         case 's':
-            return 
+            return
         case '_':
             return
-    
+
 def play_player_hand(player_hand, deck):
     while True:
         if is_busted(player_hand):
@@ -163,7 +158,7 @@ def play_player_hand(player_hand, deck):
                 display_prompt(f'Your current value is: {get_hand_value(player_hand)}')
                 continue
             case 's':
-                return 
+                return
             case '_':
                 return
 
@@ -174,7 +169,7 @@ def play_dealer_hand(dealer_hand, deck):
     while get_hand_value(dealer_hand) < DEALER_STAYS:
         card = deal_cards(deck, 1)
         dealer_hand += card
-        
+
         print()
         display_card(card, 'Dealer', 'hits and gets a')
         display_prompt(f'Dealer\'s current value is: {get_hand_value(dealer_hand)}')
@@ -206,7 +201,7 @@ def play_again():
     print('-' * LINE_WIDTH)
     print(' Play again? Yes (y) or no (n)')
     print('-' * LINE_WIDTH)
-    
+
     while True:
         selection = input().strip().lower()[0]
         if not selection:
@@ -214,14 +209,11 @@ def play_again():
             continue
         if selection in ['y', 'n']:
             break
-        else:
-            display_prompt('Invalid selection')
+        display_prompt('Invalid selection')
     match selection:
         case 'y':
             return True
         case 'n':
             return False
-
-
 
 play_21()
