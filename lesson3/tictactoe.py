@@ -48,7 +48,7 @@ def player_chooses_square(board):
     
     while True:
         valid_moves = get_valid_moves(board)
-        prompt(f'Please select a square: {valid_moves}')
+        prompt(f'Please select a square: {join_or(valid_moves)}')
         square = input()
         try:
             square = int(square)
@@ -142,5 +142,23 @@ def play_tic_tac_toe():
         if input().strip().lower()[0] != 'y':
             break
     prompt('Thanks for playing!')
+
+def join_or(lst, sep=', ', end_word='or'):
+    str_lst = [str(item) for item in lst]
+
+    if len(str_lst) > 1:
+        str_lst[-1] = f'{end_word} {str_lst[-1]}'
+    
+    if len(str_lst) > 2:
+        str_lst = sep.join(str_lst)
+    else:
+        str_lst = " ".join(str_lst)
+    return str_lst
+
+def get_scores():
+    pass
+
+def update_scores():
+    pass
 
 play_tic_tac_toe()
