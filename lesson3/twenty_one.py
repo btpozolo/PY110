@@ -6,27 +6,6 @@ TARGET_VALUE = 21
 DEALER_STAYS = 17
 LINE_WIDTH = 41
 
-def initialize_deck():
-    deck = []
-    numbers = ['2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K', 'A']
-    suits = ['Hearts', 'Diamonds', 'Spades', 'Clubs']
-
-    for suit in suits:
-            for number in numbers:
-                    deck.append([suit, number])
-
-    return deck 
-
-def deal_cards(deck, number_cards):
-    hand = []
-    for _ in range(number_cards):
-        card = r.choice(deck)
-        hand.append(card)
-        # print(f'card dealt: {card}')
-
-        deck.remove(card)
-    return hand   
-
 def display_prompt(message):
     print(f'==> {message}')
 
@@ -131,6 +110,27 @@ def get_winner(player_hand, dealer_hand):
             return 'Dealer'
         else:
             return 'Draw'
+
+def initialize_deck():
+    deck = []
+    numbers = ['2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K', 'A']
+    suits = ['Hearts', 'Diamonds', 'Spades', 'Clubs']
+
+    for suit in suits:
+            for number in numbers:
+                    deck.append([suit, number])
+
+    return deck 
+
+def deal_cards(deck, number_cards):
+    hand = []
+    for _ in range(number_cards):
+        card = r.choice(deck)
+        hand.append(card)
+        # print(f'card dealt: {card}')
+
+        deck.remove(card)
+    return hand   
 
 def is_busted(hand):
     return (get_hand_value(hand) > TARGET_VALUE)
