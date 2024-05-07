@@ -11,7 +11,7 @@ def display_prompt(message):
 def display_card(card, player, action):
     display_prompt(f'{player} {action} {card[0][1]} of {card[0][0]}')
 
-def display_cards(hand, dealer_hand, show_dealers_cards=False):
+def display_cards(hand, dealer_hand, player_total, show_dealers_cards=False):
     os.system('clear')
     print('-' * LINE_WIDTH)
     print('|', ' ' * 14, '21 GAME',' ' * 14,'|' )
@@ -25,7 +25,7 @@ def display_cards(hand, dealer_hand, show_dealers_cards=False):
 
     cards = get_hand(hand)
     display_prompt(f'You have {cards}')
-    display_prompt(f'Your current value is: {get_hand_value(hand)}')
+    display_prompt(f'Your current value is: {player_total}')
 
 def display_winner(winner):
     print()
@@ -96,9 +96,9 @@ def get_winner(player_hand, dealer_hand):
     player_value = get_hand_value(player_hand)
     dealer_value = get_hand_value(dealer_hand)
 
-    if is_busted(player_hand):
+    if is_busted(player_value):
         return 'Dealer'
-    if is_busted(dealer_hand):
+    if is_busted(dealer_value):
         return 'Player'
     if player_value > dealer_value:
         return 'Player'
@@ -127,8 +127,8 @@ def deal_cards(deck, number_cards):
         deck.remove(card)
     return hand
 
-def is_busted(hand):
-    return get_hand_value(hand) > TARGET_VALUE
+def is_busted(hand_value):
+    return hand_value > TARGET_VALUE
 
 def update_hand(hand, move):
     match move:
@@ -141,7 +141,8 @@ def update_hand(hand, move):
 
 def play_player_hand(player_hand, deck):
     while True:
-        if is_busted(player_hand):
+        player_value = get_hand_value(player_hand)
+        if is_busted(player_value):
             print()
             display_prompt('Oh no - you busted!')
             return
@@ -151,11 +152,15 @@ def play_player_hand(player_hand, deck):
             case 'h':
                 card = deal_cards(deck, 1)
                 player_hand += card
+                
                 display_card(card, 'You', 'hit and get a')
                 print()
+
                 cards = get_hand(player_hand)
+                player_value = get_hand_value(player_hand)
+
                 display_prompt(f'You have {cards}')
-                display_prompt(f'Your current value is: {get_hand_value(player_hand)}')
+                display_prompt(f'Your current hand value is: {player_value}')
                 continue
             case 's':
                 return
@@ -164,7 +169,7 @@ def play_player_hand(player_hand, deck):
 
 def play_dealer_hand(dealer_hand, deck):
     display_card([dealer_hand[1]], 'Dealer', 'flips over')
-    display_prompt(f'Dealer\'s current value is: {get_hand_value(dealer_hand)}')
+    display_prompt(f'Dealer\'s current hand value is: {get_hand_value(dealer_hand)}')
 
     while get_hand_value(dealer_hand) < DEALER_STAYS:
         card = deal_cards(deck, 1)
@@ -188,10 +193,15 @@ def play_round():
     player_hand = deal_cards(deck, 2)
     dealer_hand = deal_cards(deck, 2)
 
-    display_cards(player_hand, dealer_hand)
+    player_total = get_hand_value(player_hand)
+    #dealer_total = get_hand_value(dealer_hand)
+
+    display_cards(player_hand, dealer_hand, player_total)
     play_player_hand(player_hand, deck)
 
-    if not is_busted(player_hand):
+    player_total = get_hand_value(player_hand)
+
+    if not is_busted(player_total):
         play_dealer_hand(dealer_hand, deck)
 
     winner = get_winner(player_hand, dealer_hand)
