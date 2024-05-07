@@ -4,6 +4,7 @@ import os
 TARGET_VALUE = 21
 DEALER_STAYS = 17
 LINE_WIDTH = 41
+GAMES_TO_WIN_MATCH = 5
 
 def display_prompt(message):
     print(f'==> {message}')
@@ -11,12 +12,12 @@ def display_prompt(message):
 def display_card(card, player, action):
     display_prompt(f'{player} {action} {card[0][1]} of {card[0][0]}')
 
-def display_cards(hand, dealer_hand, player_total, show_dealers_cards=False):
-    os.system('clear')
+def display_title():
     print('-' * LINE_WIDTH)
     print('|', ' ' * 14, '21 GAME',' ' * 14,'|' )
-
     print('-' * LINE_WIDTH)
+
+def display_cards(hand, dealer_hand, player_total, show_dealers_cards=False):
     if show_dealers_cards:
         display_prompt(f'Dealer has a {get_hand(dealer_hand)}')
     else:
@@ -37,6 +38,12 @@ def display_winner(winner):
         case _:
             display_prompt('The round has ended in a draw.')
     print()
+
+def display_scores(player_wins, dealers_wins):
+    print(f'Player has: {player_wins} wins ')
+    print(f'Dealer has: {dealers_wins} wins')
+    print('First to 5 wins the match')
+    print('-' * LINE_WIDTH)
 
 def get_hand(hand):
     cards = []
@@ -92,10 +99,7 @@ def get_player_move():
         display_prompt('Invalid selection')
     return selection
 
-def get_winner(player_hand, dealer_hand):
-    player_value = get_hand_value(player_hand)
-    dealer_value = get_hand_value(dealer_hand)
-
+def get_winner(player_value, dealer_value):
     if is_busted(player_value):
         return 'Dealer'
     if is_busted(dealer_value):
@@ -180,22 +184,40 @@ def play_dealer_hand(dealer_hand, deck):
         display_prompt(f'Dealer\'s current value is: {get_hand_value(dealer_hand)}')
 
 def play_21():
-    while True:
-        play_round()
+    player_wins = 0
+    dealer_wins = 0
 
+    while True:
+        winner = play_round(player_wins, dealer_wins)
+
+        match winner:
+            case 'Dealer':
+                dealer_wins += 1
+            case 'Player':
+                player_wins += 1
+        
+        if max(player_wins, dealer_wins) >= GAMES_TO_WIN_MATCH:
+            print('-' * LINE_WIDTH)
+            print(f'{winner} wins the match to {GAMES_TO_WIN_MATCH}!')
+            player_wins = 0
+            dealer_wins = 0
+        
         if not play_again():
             break
+
     print('Thanks for playing!')
 
-def play_round():
+def play_round(player_wins, dealer_wins):
     deck = initialize_deck()
 
     player_hand = deal_cards(deck, 2)
     dealer_hand = deal_cards(deck, 2)
 
     player_total = get_hand_value(player_hand)
-    #dealer_total = get_hand_value(dealer_hand)
-
+    
+    os.system('clear')
+    display_title()
+    display_scores(player_wins, dealer_wins)
     display_cards(player_hand, dealer_hand, player_total)
     play_player_hand(player_hand, deck)
 
@@ -204,8 +226,11 @@ def play_round():
     if not is_busted(player_total):
         play_dealer_hand(dealer_hand, deck)
 
-    winner = get_winner(player_hand, dealer_hand)
+    dealer_total = get_hand_value(dealer_hand)
+
+    winner = get_winner(player_total, dealer_total)
     display_winner(winner)
+    return winner
 
 def play_again():
     print('-' * LINE_WIDTH)
