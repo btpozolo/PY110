@@ -156,7 +156,7 @@ def play_player_hand(player_hand, deck):
             case 'h':
                 card = deal_cards(deck, 1)
                 player_hand += card
-                
+
                 display_card(card, 'You', 'hit and get a')
                 print()
 
@@ -195,13 +195,13 @@ def play_21():
                 dealer_wins += 1
             case 'Player':
                 player_wins += 1
-        
+
         if max(player_wins, dealer_wins) >= GAMES_TO_WIN_MATCH:
             print('-' * LINE_WIDTH)
             print(f'{winner} wins the match to {GAMES_TO_WIN_MATCH}!')
             player_wins = 0
             dealer_wins = 0
-        
+
         if not play_again():
             break
 
@@ -214,7 +214,7 @@ def play_round(player_wins, dealer_wins):
     dealer_hand = deal_cards(deck, 2)
 
     player_total = get_hand_value(player_hand)
-    
+
     os.system('clear')
     display_title()
     display_scores(player_wins, dealer_wins)
