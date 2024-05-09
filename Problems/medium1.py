@@ -104,3 +104,249 @@ print(rotate_list(1))                            # None
 lst = [1, 2, 3, 4]
 print(rotate_list(lst))                    # [2, 3, 4, 1]
 print(lst)                                # [1, 2, 3, 4]
+
+# Stack Machine Interpretation
+
+'''
+problem
+- input: string of commands
+- ouptut: output of commands
+rules:
+    - explicit: sequencially move from left to right getting and doing action requested
+    - implicit:
+
+Examples / test cases:
+Data structure:
+Algo:
+- Parse out list of commands to be executed 
+- init a stack and register
+- build helper function to do things requested
+- iterate through list of commands, executing each one
+'''
+
+
+
+def is_integer(sub):
+    try:
+        int(sub)
+        return True
+    except:
+        return False
+
+def minilang(commands):
+    stack = []
+    register = 0
+
+    for command in commands.split():
+        # print(f'stack is {stack}')
+        # print(f'register is {register}')
+        # print(f'command = {command}')
+        match command:
+            case 'PUSH':
+                stack.append(register)
+            case 'ADD':
+                register += stack.pop()
+            case 'SUB':
+                register -= stack.pop()
+            case 'MULT':
+                register *= stack.pop()
+            case 'DIV':
+                register = register // stack.pop()
+            case 'REMAINDER':
+                register = register % stack.pop()
+            case 'POP':
+                register = stack.pop()
+            case 'PRINT':
+                print(register)
+            case _:
+                register = int(command) 
+    return
+
+minilang('5 PUSH 6 ADD')
+# 0
+
+minilang('5 PUSH 3 MULT PRINT')
+# 15
+
+minilang('5 PRINT PUSH 3 PRINT ADD PRINT')
+# 5
+# 3
+# 8
+
+minilang('5 PUSH POP PRINT')
+# 5
+
+minilang('3 PUSH 4 PUSH 5 PUSH PRINT ADD PRINT POP PRINT ADD PRINT')
+# 5
+# 10
+# 4
+# 7
+
+minilang('3 PUSH PUSH 7 DIV MULT PRINT')
+# 6
+
+minilang('4 PUSH PUSH 7 REMAINDER MULT PRINT')
+# 12
+
+minilang('-3 PUSH 5 SUB PRINT')
+# 8
+
+minilang('6 PUSH')
+# (nothing is printed because the `program` argument has no `PRINT` commands)
+
+# Word to Digit
+
+'''
+problem:
+- input: string
+- output: string with numbers swapped to ints
+Rules:
+    - explicit:
+    - implicit:
+examples / test cases
+data structure:
+- dict - keys are str, values are ints
+algo:
+- build dict
+- split into words
+- for each word if in dict, get value 
+- append to a new string
+- return new string
+'''
+import string
+
+',' in string.punctuation
+
+def word_to_digit(message):
+    NUMS = {
+        'zero': 0,
+        'one': 1,
+        'two': 2,
+        'three': 3,
+        'four' : 4,
+        'five' : 5,
+        'six': 6,
+        'seven': 7,
+        'eight': 8,
+        'nine': 9
+    }
+    new_words =[]
+
+    for word in message.split():
+        clean_word = word
+        first_char = ""
+        last_char = ""
+        
+        while (clean_word[0] in string.punctuation) or (clean_word[-1] in string.punctuation):
+            if clean_word[0] in string.punctuation:
+                first_char = first_char + clean_word[0]
+                clean_word = clean_word[1:]
+
+            if clean_word[-1] in string.punctuation:
+                last_char = clean_word[-1] + last_char
+                clean_word = clean_word[:-1]
+        
+        new_words.append(first_char + str(NUMS.get(clean_word.lower(), clean_word)) + last_char)
+
+    return " ".join([word for word in new_words])
+
+
+message = 'Please call me at five, five, five, one, two, three, four.'
+print(word_to_digit(message) == "Please call me at 5, 5, 5, 1, 2, 3, 4.")
+# Should print True
+message = 'Please call me at five five five one two three four'
+print(word_to_digit(message) == "Please call me at 5 5 5 1 2 3 4")
+print(word_to_digit(message))
+# Should print True
+
+# Fibonacci Numbers
+
+'''
+- build up from 2
+- sum n1 + n2
+- store data n2 --> n1 and new sum --> n2
+- continue until your number
+'''
+
+def fibonacci(number):
+    n1 = 1
+    n2 = 1
+    new_sum = 1
+
+    for _ in range(3, number + 1):
+        new_sum = n1 + n2
+        n1 = n2
+        n2 = new_sum
+    
+    return new_sum
+
+print(fibonacci(1) == 1)                  # True
+print(fibonacci(2) == 1)                  # True
+print(fibonacci(3) == 2)                  # True
+print(fibonacci(4) == 3)                  # True
+print(fibonacci(5) == 5)                  # True
+print(fibonacci(6) == 8)                  # True
+print(fibonacci(12) == 144)               # True
+print(fibonacci(20) == 6765)              # True
+print(fibonacci(50) == 12586269025)       # True
+print(fibonacci(75) == 2111485077978050)  # True
+
+# Fibonacci Numbers (recursion)
+fibs = [1 , 1]
+def fibonacci(number):
+    if number <= len(fibs):
+        return fibs[number - 1]
+    else:
+        fibs.append(fibs[-2] + fibs[-1])
+    
+    return fibonacci(number - 1) + fibonacci(number - 2)
+    
+print(fibonacci(1) == 1)                  # True
+print(fibonacci(2) == 1)                  # True
+print(fibonacci(3) == 2)                  # True
+print(fibonacci(4) == 3)                  # True
+print(fibonacci(5) == 5)                  # True
+print(fibonacci(6) == 8)                  # True
+print(fibonacci(12) == 144)               # True
+print(fibonacci(20) == 6765)              # True
+print(fibonacci(50) == 12586269025)       # True
+print(fibonacci(75) == 2111485077978050)  # True
+print(fibs)
+
+# Fib number location by length
+'''
+return the first fibanocci sequence of that length
+'''
+def find_fibonacci_index_by_length(num_digits):
+    fib_num = 1
+
+    while True:
+        val = fibonacci(fib_num)
+        if len(str(val)) >= num_digits:
+            break
+        fib_num += 1
+    return fib_num
+
+def fibonacci(number):
+    n1 = 1
+    n2 = 1
+    new_sum = 1
+
+    for _ in range(3, number + 1):
+        new_sum = n1 + n2
+        n1 = n2
+        n2 = new_sum
+    
+    return new_sum
+
+# All of these examples should print True
+# The first 12 fibonacci numbers are: 1 1 2 3 5 8 13 21 34 55 89 144
+print(find_fibonacci_index_by_length(2) == 7)
+print(find_fibonacci_index_by_length(3) == 12)
+print(find_fibonacci_index_by_length(10) == 45)
+print(find_fibonacci_index_by_length(16) == 74)
+print(find_fibonacci_index_by_length(100) == 476)
+print(find_fibonacci_index_by_length(1000) == 4782)
+
+# Next example might take a little while on older systems
+print(find_fibonacci_index_by_length(10000) == 47847)
