@@ -126,7 +126,7 @@ algo:
 '''
 def closest_numbers(numbers):
     closest_distance = abs(numbers[0] - numbers[1])
-    closest_nums = (numbers[0], numbers[1])
+    closest_nums = [(numbers[0], numbers[1])]
 
     for start_idx, first_num in enumerate(numbers):
         print(f'{start_idx = } {first_num = }')
@@ -135,16 +135,35 @@ def closest_numbers(numbers):
             curr_diff = abs(first_num - second_num)
             if curr_diff < closest_distance:
                 closest_distance = curr_diff
-                closest_nums = (first_num, second_num)
+                closest_nums = [(first_num, second_num)]
+            elif curr_diff == closest_distance:
+                closest_nums.append((first_num, second_num))
+            
 
-    print(f'{closest_distance = } {closest_nums = }')
-    return closest_nums
+    print(f'{closest_distance = } \n{closest_nums = }')
+    
+    last_digit = [numbers.index(pair[1])
+        for pair in closest_nums
+    ]
+
+    idx = last_digit.index(min(last_digit))
+
+    # last_digit = [ max(numbers.index(n1), numbers.index(n2))
+    #     for pair in closest_nums
+    #     for n1, n2 in pair
+    # ]
+    print(f'{last_digit = }')
+    print(f'{idx = }')
+    return closest_nums[idx]
+
+print(closest_numbers([1, 10, 14, 5]) == (10, 14))
 
 closest_numbers([1 ,22, 24, 5,43,412])
 
 print(closest_numbers([5, 25, 15, 11, 20]) == (15, 11))
 print(closest_numbers([19, 25, 32, 4, 27, 16]) == (25, 27))
 print(closest_numbers([12, 22, 7, 17]) == (12, 7))
+
 
 # 5
 
@@ -206,12 +225,12 @@ def count_letters(string):
     unique_letters = set([char for char in string if char.isalpha() and char.islower()])
 
     letter_freq = {letter: string.lower().count(letter) for letter in unique_letters }
-
+    print(f'{letter_freq = }')
     return letter_freq
 
 
 expected = {'w': 1, 'o': 2, 'e': 3, 'b': 1, 'g': 1, 'n': 1}
-print(count_letters('woebegone') == expected)
+print(count_letters('Wowebegone') == expected)
 
 expected = {'l': 1, 'o': 1, 'w': 1, 'e': 4, 'r': 2,
             'c': 2, 'a': 2, 's': 2, 'u': 1, 'p': 2}
